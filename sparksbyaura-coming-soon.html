@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SparksByAura - Coming Soon</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #050A18;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow: hidden;
+        color: white;
+    }
+
+    /* Subtle Grid Overlay */
+    body::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(to right, #0F1E3D 1px, transparent 1px),
+            linear-gradient(to bottom, #0F1E3D 1px, transparent 1px);
+        background-size: 60px 60px;
+        opacity: 0.08;
+        z-index: 0;
+    }
+
+    /* Center Content */
+    .container {
+        position: relative;
+        text-align: center;
+        z-index: 2;
+    }
+
+    h1 {
+        font-size: 70px;
+        letter-spacing: 12px;
+        font-weight: 800;
+        background: linear-gradient(90deg, #00BFFF, #00FFFF);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 25px rgba(0,191,255,0.6);
+        animation: fadeIn 1.2s ease forwards;
+    }
+
+    .logo {
+        margin-top: 40px;
+        max-width: 420px;
+        width: 90%;
+        filter: drop-shadow(0 0 25px rgba(0,191,255,0.5));
+        animation: fadeIn 1.5s ease forwards;
+    }
+
+    .divider {
+        width: 120px;
+        height: 1px;
+        background: #00FFFF;
+        margin: 25px auto;
+        opacity: 0.6;
+    }
+
+    .tagline {
+        letter-spacing: 6px;
+        font-size: 14px;
+        color: #CFEFFF;
+        text-transform: uppercase;
+    }
+
+    /* Horizontal Pulse Line */
+    .pulse-line {
+        position: absolute;
+        top: 50%;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(to right, transparent, #00FFFF, transparent);
+        opacity: 0.4;
+        animation: pulseMove 8s linear infinite;
+        z-index: 1;
+    }
+
+    /* Edge Glow */
+    .border-glow {
+        position: absolute;
+        inset: 0;
+        border: 1px solid rgba(0,255,255,0.2);
+        pointer-events: none;
+        z-index: 3;
+    }
+
+    @keyframes pulseMove {
+        from { left: -100%; }
+        to { left: 100%; }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 42px;
+            letter-spacing: 6px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="pulse-line"></div>
+
+<div class="container">
+    <h1>COMING SOON</h1>
+    <img src="SPALOGOWHITE.jpeg" alt="SparksByAura Logo" class="logo">
+    <div class="divider"></div>
+    <div class="tagline">Powering NYC</div>
+</div>
+
+<div class="border-glow"></div>
+
+</body>
+</html>
