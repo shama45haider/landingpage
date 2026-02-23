@@ -1,135 +1,442 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SparksByAura - Coming Soon</title>
+import React, { useState, useEffect } from "react";
 
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+export default function SparksByAuraWebsite() {
+  const projects = [
+    "Panel Upgrade – Hoboken",
+    "Custom Recessed Lighting",
+    "Furniture Assembly",
+    "Full Apartment Rewire"
+  ];
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [flash, setFlash] = useState(false);
+  const [splitVisible, setSplitVisible] = useState(false);
+  const [servicesVisible, setServicesVisible] = useState(false);
+
+  const scrollToContact = (e) => {
+    e.preventDefault();
+    const section = document.getElementById("contact");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+      section.classList.add("contact-highlight");
+      setTimeout(() => section.classList.remove("contact-highlight"), 1200);
     }
+  };
 
-    body {
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #050A18;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        overflow: hidden;
-        color: white;
-    }
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % projects.length);
+    }, 4000);
+    return () => clearInterval(slideInterval);
+  }, []);
 
-    /* Subtle Grid Overlay */
-    body::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image:
-            linear-gradient(to right, #0F1E3D 1px, transparent 1px),
-            linear-gradient(to bottom, #0F1E3D 1px, transparent 1px);
-        background-size: 60px 60px;
-        opacity: 0.08;
-        z-index: 0;
-    }
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target.id === "split-section" && entry.isIntersecting) {
+            setSplitVisible(true);
+          }
+          if (entry.target.id === "services" && entry.isIntersecting) {
+            setServicesVisible(true);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
 
-    /* Center Content */
-    .container {
-        position: relative;
-        text-align: center;
-        z-index: 2;
-    }
+    const splitEl = document.getElementById("split-section");
+    const servicesEl = document.getElementById("services");
 
-    h1 {
-        font-size: 70px;
-        letter-spacing: 12px;
-        font-weight: 800;
-        background: linear-gradient(90deg, #00BFFF, #00FFFF);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: 0 0 25px rgba(0,191,255,0.6);
-        animation: fadeIn 1.2s ease forwards;
-    }
+    if (splitEl) observer.observe(splitEl);
+    if (servicesEl) observer.observe(servicesEl);
 
-    .logo {
-        margin-top: 40px;
-        max-width: 420px;
-        width: 90%;
-        filter: drop-shadow(0 0 25px rgba(0,191,255,0.5));
-        animation: fadeIn 1.5s ease forwards;
-    }
+    return () => observer.disconnect();
+  }, []);
 
-    .divider {
-        width: 120px;
-        height: 1px;
-        background: #00FFFF;
-        margin: 25px auto;
-        opacity: 0.6;
-    }
+  useEffect(() => {
+    const flashInterval = setInterval(() => {
+      setFlash(true);
+      setTimeout(() => setFlash(false), 300);
+    }, 10000);
+    return () => clearInterval(flashInterval);
+  }, []);
 
-    .tagline {
-        letter-spacing: 6px;
-        font-size: 14px;
-        color: #CFEFFF;
-        text-transform: uppercase;
-    }
+  return (
+    <div
+      style={{
+        fontFamily: "'Orbitron', 'Montserrat', sans-serif",
+        background:
+          "radial-gradient(circle at top, #0a0f2c 0%, #050816 40%, black 100%)",
+      }}
+      className="min-h-screen text-white relative overflow-hidden"
+    >
+      {/* GOOGLE FONTS + STYLES */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Montserrat:wght@300;400;600&display=swap');
 
-    /* Horizontal Pulse Line */
-    .pulse-line {
-        position: absolute;
-        top: 50%;
-        left: -100%;
-        width: 100%;
-        height: 2px;
-        background: linear-gradient(to right, transparent, #00FFFF, transparent);
-        opacity: 0.4;
-        animation: pulseMove 8s linear infinite;
-        z-index: 1;
-    }
+        h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
+        p, a, button, input, textarea { font-family: 'Montserrat', sans-serif; }
 
-    /* Edge Glow */
-    .border-glow {
-        position: absolute;
-        inset: 0;
-        border: 1px solid rgba(0,255,255,0.2);
-        pointer-events: none;
-        z-index: 3;
-    }
-
-    @keyframes pulseMove {
-        from { left: -100%; }
-        to { left: 100%; }
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 768px) {
-        h1 {
-            font-size: 42px;
-            letter-spacing: 6px;
+        @keyframes shimmer {
+          0% { background-position: -200% center; }
+          100% { background-position: 200% center; }
         }
-    }
-</style>
-</head>
 
-<body>
+        .line-one {
+          background: linear-gradient(90deg,#60a5fa,#3b82f6,#1d4ed8,#3b82f6,#60a5fa);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          color: transparent;
+          animation: shimmer 4s linear infinite;
+        }
 
-<div class="pulse-line"></div>
+        .line-two {
+          color: white;
+          text-shadow: 0 0 20px rgba(59,130,246,0.6);
+        }
 
-<div class="container">
-    <h1>COMING SOON</h1>
-   <img src="SPALOGOWHITE-removebg-preview.png" alt="SparksByAura Logo">
-    <div class="divider"></div>
-    <div class="tagline">Powering NYC</div>
-</div>
+        .underline-wrapper {
+          position: relative;
+          display: inline-block;
+        }
 
-<div class="border-glow"></div>
+        .underline-wrapper::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: -8px;
+          width: 100%;
+          height: 3px;
+          background: linear-gradient(90deg,#1d4ed8,#60a5fa);
+        }
 
-</body>
-</html>
+        .lightning-flash {
+          position: absolute;
+          inset: 0;
+          background: white;
+          opacity: 0.15;
+          pointer-events: none;
+        }
+
+        @keyframes phoneRing {
+          0% { transform: rotate(0deg); }
+          20% { transform: rotate(-15deg); }
+          40% { transform: rotate(15deg); }
+          60% { transform: rotate(-10deg); }
+          80% { transform: rotate(10deg); }
+          100% { transform: rotate(0deg); }
+        }
+
+        .phone-icon {
+          display: inline-block;
+          margin-right: 8px;
+          font-size: 20px;
+          animation: phoneRing 1.5s ease-in-out infinite;
+        }
+
+        @keyframes mailFloat {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-4px); }
+          100% { transform: translateY(0px); }
+        }
+
+        .mail-icon {
+          display: inline-block;
+          margin-right: 8px;
+          font-size: 20px;
+          animation: mailFloat 2s ease-in-out infinite;
+        }
+
+        @keyframes electricFlow {
+          0% { background-position: 0% 50%; }
+          100% { background-position: 300% 50%; }
+        }
+
+        .electric-hover {
+          position: relative;
+          border: 3px solid transparent;
+          background-origin: border-box;
+          background-clip: padding-box, border-box;
+          transition: all 0.3s ease;
+        }
+
+        .electric-hover:hover {
+          background-image:
+            linear-gradient(#1e3a8a, #1e3a8a),
+            linear-gradient(90deg, #3b82f6, #60a5fa, #2563eb, #1d4ed8, #3b82f6);
+          background-size: 100% 100%, 300% 300%;
+          animation: electricFlow 1.2s linear infinite;
+          box-shadow: 0 0 15px rgba(59,130,246,0.6);
+        }
+
+        .contact-highlight {
+          animation: contactPulse 1.2s ease-in-out;
+        }
+
+        /* SCROLL ANIMATIONS */
+        .fade-up {
+          opacity: 0;
+          transform: translateY(40px);
+          transition: all 0.8s ease;
+        }
+
+        .fade-up.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* NEW ELECTRIC SWEEP CARD EFFECT */
+        @keyframes electricSweep {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+
+        .split-card {
+          position: relative;
+          overflow: hidden;
+          transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .split-card::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            120deg,
+            transparent 30%,
+            rgba(59,130,246,0.12) 50%,
+            transparent 70%
+          );
+          background-size: 200% 100%;
+          animation: electricSweep 10s linear infinite;
+          pointer-events: none;
+        }
+
+        .split-card:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 0 30px rgba(59,130,246,0.35);
+        }
+
+        @keyframes contactPulse {
+          0% { box-shadow: 0 0 0px rgba(59,130,246,0.4); }
+          50% { box-shadow: 0 0 40px rgba(59,130,246,0.8); }
+          100% { box-shadow: 0 0 0px rgba(59,130,246,0.4); }
+        }
+      `}</style>
+
+      {flash && <div className="lightning-flash" />}
+
+      {/* NAVBAR */}
+      <nav className="flex justify-between items-center px-10 py-6 backdrop-blur-md bg-black/40 border-b border-blue-900 sticky top-0">
+        <div className="flex items-center">
+          <img
+            src="/mnt/data/SPALOGOWHITE-removebg-preview.png"
+            alt="Sparks By Aura Logo"
+            className="h-10 w-auto object-contain"
+          />
+        </div>
+      </nav>
+
+      {/* HERO */}
+      <section className="text-center px-8 py-28">
+        <div className="underline-wrapper mb-6">
+          <h1 className="text-5xl font-extrabold">
+            <div className="line-one">SparksByAura</div>
+            <div className="line-two text-3xl mt-2">Electrical Services</div>
+          </h1>
+        </div>
+
+        <p className="text-gray-300 max-w-2xl mx-auto text-lg">
+          We are a NYC-based electrical business working with certified contractors to bring professional, code-compliant solutions to your everyday buildings. From upgrades to full installations, let’s bring your vision to life with precision and reliability.
+        </p>
+
+        {/* RESIDENTIAL & COMMERCIAL SPLIT LIST */}
+        <div id="split-section" className={`mt-12 max-w-4xl mx-auto grid md:grid-cols-2 gap-8 fade-up ${splitVisible ? 'visible' : ''}`}>
+          <div className="split-card bg-[#111c4d] p-8 rounded-3xl border border-blue-900 shadow-xl">
+            <h3 className="text-2xl font-bold text-blue-400 mb-6">Residential</h3>
+            <ul className="space-y-3 text-gray-300 text-left">
+              <li>• Electrical Panel Repairs & Upgrades</li>
+              <li>• Outlet & Switch Installations</li>
+              <li>• Interior & Exterior Lighting Installation</li>
+              <li>• Recessed & LED Lighting Upgrades</li>
+              <li>• Appliance Wiring & Dedicated Circuits</li>
+              <li>• EV Charger Installation</li>
+              <li>• Ceiling Fan Installation</li>
+              <li>• Smart Home Device Installation</li>
+              <li>• Home Electrical Troubleshooting</li>
+              <li>• Service Upgrades & Meter Replacements</li>
+              <li>• Subpanel Installations</li>
+              <li>• GFCI & AFCI Protection Installation</li>
+              <li>• Outdoor & Landscape Lighting</li>
+              <li>• Basement & Garage Wiring</li>
+              <li>• Hot Tub & Pool Wiring</li>
+              <li>• Attic & Crawl Space Electrical Repairs</li>
+              <li>• Home Office & Dedicated Circuit Setup</li>
+            </ul>
+          </div>
+
+          <div className="split-card bg-[#111c4d] p-8 rounded-3xl border border-blue-900 shadow-xl">
+            <h3 className="text-2xl font-bold text-blue-400 mb-6">Commercial</h3>
+            <ul className="space-y-3 text-gray-300 text-left">
+              <li>• Office & Tenant Build-Out Wiring</li>
+              <li>• Commercial Lighting Retrofits (LED Upgrades)</li>
+              <li>• 3-Phase Power Installations</li>
+              <li>• Electrical Distribution Systems</li>
+              <li>• Commercial Service Upgrades</li>
+              <li>• Backup Generator Wiring</li>
+              <li>• Emergency & Exit Lighting Systems</li>
+              <li>• Data & Low-Voltage Cabling</li>
+              <li>• Security & Access Control Wiring</li>
+              <li>• Fire Alarm System Wiring</li>
+              <li>• Conduit Installation & Pipe Bending</li>
+              <li>• Transformer Installation</li>
+              <li>• Load Calculations & Panel Scheduling</li>
+              <li>• Equipment Disconnect Installations</li>
+              <li>• Commercial Kitchen Equipment Wiring</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-10 flex justify-center gap-6">
+          <a
+            href="tel:7186350662"
+            className="electric-hover bg-blue-600 px-8 py-3 rounded-full shadow-lg hover:scale-105 hover:bg-blue-500 transition-all duration-300 inline-block"
+          >
+            <span className="phone-icon">📞</span>
+            Call Now
+          </a>
+          <a
+            href="#contact"
+            onClick={scrollToContact}
+            className="electric-hover border border-blue-500 text-blue-400 px-8 py-3 rounded-full hover:bg-blue-600 hover:text-white hover:scale-105 transition-all duration-300 inline-block"
+          >
+            <span className="mail-icon">✉️</span>
+            Email Us
+          </a>
+        </div>
+      </section>
+
+      {/* CAROUSEL */}
+      <section id="work" className="px-8 py-24 text-center">
+        <h2 className="text-4xl font-bold text-blue-400 mb-16">Recent Projects</h2>
+        <div className="max-w-3xl mx-auto">
+          <div className="h-64 rounded-3xl bg-gradient-to-r from-blue-700 to-blue-500 flex items-center justify-center text-black text-2xl font-bold shadow-2xl transition-all duration-500">
+            {projects[currentSlide]}
+          </div>
+        </div>
+      </section>
+
+      {/* SERVICES */}
+      <section id="services" className={`px-8 py-24 bg-[#0d163a] text-center fade-up ${servicesVisible ? 'visible' : ''}`}>
+        <h2 className="text-4xl font-bold text-blue-400 mb-16">Other Services</h2>
+        <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+          {[
+            {
+              title: "Surround Sound Theatre System",
+              desc: "Custom in-wall and in-ceiling speaker installations with clean wire management for a true home theater experience."
+            },
+            {
+              title: "TV Mounting",
+              desc: "Professional TV mounting with concealed wiring, secure bracket installation, and clean finish work."
+            },
+            {
+              title: "Smart Home Security",
+              desc: "Installation of cameras, motion sensors, smart locks, and integrated security systems for modern homes."
+            },
+            {
+              title: "HVAC",
+              desc: "Electrical wiring and dedicated circuits for HVAC units, air handlers, condensers, and related systems."
+            },
+            {
+              title: "Emergency Electrical Repairs",
+              desc: "Rapid response service for power outages, electrical faults, and urgent safety concerns."
+            },
+            {
+              title: "General Handyman Work",
+              desc: "Reliable small repairs, installations, and home improvement tasks handled with precision and care."
+            }
+          ].map((service, i) => (
+            <div
+              key={i}
+              className="bg-[#111c4d] p-8 rounded-2xl border border-blue-900 shadow-lg hover:shadow-blue-500/40 hover:-translate-y-2 transition-all duration-300"
+            >
+              <h3 className="text-xl font-semibold text-blue-300">{service.title}</h3>
+              <p className="text-gray-400 mt-4 text-sm">
+                {service.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section id="testimonials" className="px-8 py-24 text-center">
+        <h2 className="text-4xl font-bold text-blue-400 mb-16">Client Testimonials</h2>
+        <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+          {[
+            {
+              name: "Michael R. – Hoboken, NJ",
+              text: "SparksByAura upgraded our electrical panel and installed recessed lighting throughout our condo. Everything passed inspection the first time and the work was extremely clean. Highly professional.",
+            },
+            {
+              name: "Danielle T. – Brooklyn, NY",
+              text: "We hired them for TV mounting and dedicated circuits for our home office. The setup looks amazing and everything was done safely and neatly. Communication was excellent from start to finish.",
+            },
+            {
+              name: "Carlos M. – Manhattan, NY",
+              text: "Our oven suddenly stopped working, and SparksByAura sent a technician out quickly to diagnose the issue. They identified the problem right away and had it repaired the same day. Professional, knowledgeable, and efficient service.",
+            },
+          ].map((testimonial, i) => (
+            <div
+              key={i}
+              className="bg-[#111c4d] p-8 rounded-2xl border border-blue-900 shadow-lg hover:shadow-blue-500/40 transition"
+            >
+              <div className="text-blue-400 mb-4 text-lg">★★★★★</div>
+              <p className="text-gray-300 text-sm">
+                {testimonial.text}
+              </p>
+              <p className="text-blue-300 mt-6 font-semibold">
+                – {testimonial.name}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CONTACT */}
+      <section id="contact" className="px-8 py-24 bg-[#0d163a] text-center">
+        <h2 className="text-4xl font-bold text-blue-400 mb-16">Contact Us</h2>
+        <div className="max-w-xl mx-auto bg-[#111c4d] p-10 rounded-3xl border border-blue-900 shadow-2xl">
+          <form className="space-y-6">
+            <input
+              placeholder="Full Name"
+              className="w-full p-4 rounded-xl bg-[#0a0f2c] border border-blue-800 focus:outline-none focus:border-blue-500"
+            />
+            <input
+              placeholder="Email Address"
+              className="w-full p-4 rounded-xl bg-[#0a0f2c] border border-blue-800 focus:outline-none focus:border-blue-500"
+            />
+            <input
+              placeholder="Phone Number"
+              className="w-full p-4 rounded-xl bg-[#0a0f2c] border border-blue-800 focus:outline-none focus:border-blue-500"
+            />
+            <textarea
+              placeholder="Describe your project..."
+              rows="4"
+              className="w-full p-4 rounded-xl bg-[#0a0f2c] border border-blue-800 focus:outline-none focus:border-blue-500"
+            />
+            <button className="w-full bg-blue-600 py-4 rounded-full hover:bg-blue-500 hover:scale-105 transition-all duration-300">
+              Send Message
+            </button>
+          </form>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="border-t border-blue-900 py-8 text-center text-gray-400 text-sm">
+        SparksByAura LLC.
+      </footer>
+    </div>
+  );
+}
