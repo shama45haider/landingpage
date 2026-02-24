@@ -9,6 +9,7 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+
 body{
   font-family:'Montserrat',sans-serif;
   background:radial-gradient(circle at top,#0a0f2c 0%,#050816 40%,#000 100%);
@@ -17,15 +18,15 @@ body{
   position:relative;
 }
 
-/* Animated Background Glow */
+/* ===== Animated Electric Background ===== */
 body::before{
   content:'';
   position:fixed;
   inset:0;
   background:
-    radial-gradient(circle at 20% 30%,rgba(59,130,246,0.15),transparent 40%),
-    radial-gradient(circle at 80% 70%,rgba(37,99,235,0.12),transparent 45%),
-    radial-gradient(circle at 50% 90%,rgba(96,165,250,0.10),transparent 40%);
+    radial-gradient(circle at 20% 30%,rgba(59,130,246,0.18),transparent 40%),
+    radial-gradient(circle at 80% 70%,rgba(37,99,235,0.15),transparent 45%),
+    radial-gradient(circle at 50% 90%,rgba(96,165,250,0.12),transparent 40%);
   animation:backgroundMove 18s ease-in-out infinite alternate;
   z-index:0;
   pointer-events:none;
@@ -37,9 +38,10 @@ body::before{
   100%{transform:translateY(10px) scale(1)}
 }
 
-section{padding:80px 20px;position:relative;z-index:1}
+section{padding:90px 20px;position:relative;z-index:1}
 .container{max-width:1200px;margin:auto}
 
+/* ===== Navbar ===== */
 nav{
   display:flex;
   justify-content:space-between;
@@ -54,12 +56,16 @@ nav{
 }
 nav img{height:55px}
 
-.hero{text-align:center;padding:100px 20px 60px}
+/* ===== Hero ===== */
+.hero{text-align:center;padding:120px 20px 80px}
+
 .hero h1{
   font-family:'Orbitron',sans-serif;
-  font-size:clamp(36px,6vw,64px);
+  font-size:clamp(38px,6vw,68px);
   font-weight:900;
+  letter-spacing:1px;
 }
+
 .line-one{
   background:linear-gradient(90deg,#60a5fa,#3b82f6,#1d4ed8,#3b82f6,#60a5fa);
   -webkit-background-clip:text;
@@ -67,105 +73,245 @@ nav img{height:55px}
   animation:shimmer 4s linear infinite;
   background-size:200% auto;
 }
-@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
-.hero p{max-width:700px;margin:25px auto;color:#cbd5e1}
 
-.buttons{margin-top:30px;display:flex;flex-wrap:wrap;gap:15px;justify-content:center}
+@keyframes shimmer{
+  0%{background-position:-200% center}
+  100%{background-position:200% center}
+}
+
+.hero p{
+  max-width:750px;
+  margin:25px auto;
+  color:#cbd5e1;
+  font-size:18px;
+}
+
+.buttons{
+  margin-top:35px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px;
+  justify-content:center;
+}
+
 .btn{
-  padding:14px 28px;
+  padding:15px 30px;
   border-radius:50px;
   text-decoration:none;
   font-weight:600;
   transition:.3s;
   display:inline-flex;
   align-items:center;
-  gap:8px;
+  gap:10px;
 }
-.primary{background:#2563eb;color:#fff}
-.primary:hover{background:#3b82f6;transform:scale(1.05)}
-.secondary{border:2px solid #3b82f6;color:#3b82f6}
-.secondary:hover{background:#3b82f6;color:#fff;transform:scale(1.05)}
 
+.primary{
+  background:#2563eb;
+  color:#fff;
+}
+.primary:hover{
+  background:#3b82f6;
+  transform:scale(1.07);
+}
+
+.secondary{
+  border:2px solid #3b82f6;
+  color:#3b82f6;
+}
+.secondary:hover{
+  background:#3b82f6;
+  color:#fff;
+  transform:scale(1.07);
+}
+
+/* ===== Section Titles ===== */
 .section-title{
   font-family:'Orbitron',sans-serif;
   text-align:center;
-  font-size:clamp(26px,4vw,36px);
-  margin-bottom:20px;
+  font-size:clamp(28px,4vw,40px);
+  margin-bottom:30px;
   background:linear-gradient(90deg,#60a5fa,#3b82f6,#1d4ed8);
   -webkit-background-clip:text;
   color:transparent;
+  animation:titleGlow 3s ease-in-out infinite alternate;
 }
 
-.split-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;margin-top:60px}
-.card{background:#111c4d;padding:30px;border-radius:20px;border:1px solid #1e3a8a;transition:.3s}
-.card:hover{transform:translateY(-6px);box-shadow:0 0 25px rgba(59,130,246,.3)}
-.card ul{margin-top:20px;line-height:1.8;color:#cbd5e1}
+.section-title::after{
+  content:'';
+  display:block;
+  width:90px;
+  height:3px;
+  margin:14px auto 0;
+  background:linear-gradient(90deg,#3b82f6,#60a5fa);
+  animation:underlinePulse 2.5s ease-in-out infinite;
+}
 
+@keyframes titleGlow{
+  0%{text-shadow:0 0 6px rgba(59,130,246,.4)}
+  100%{text-shadow:0 0 22px rgba(59,130,246,.9)}
+}
+
+@keyframes underlinePulse{
+  0%{opacity:.6;transform:scaleX(1)}
+  50%{opacity:1;transform:scaleX(1.3)}
+  100%{opacity:.6;transform:scaleX(1)}
+}
+
+/* ===== Grids ===== */
+.split-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:35px;
+  margin-top:70px;
+}
+
+.card{
+  background:#111c4d;
+  padding:35px;
+  border-radius:22px;
+  border:1px solid #1e3a8a;
+  transition:.3s;
+}
+
+.card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 0 30px rgba(59,130,246,.35);
+}
+
+.card ul{
+  margin-top:20px;
+  line-height:1.9;
+  color:#cbd5e1;
+}
+
+/* ===== Particle Section ===== */
+.particle-section{
+  position:relative;
+  overflow:hidden;
+}
+
+.particle-section::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background-image:
+    radial-gradient(3px 3px at 15% 25%,rgba(96,165,250,.9),transparent),
+    radial-gradient(4px 4px at 70% 60%,rgba(59,130,246,.85),transparent),
+    radial-gradient(3px 3px at 40% 80%,rgba(147,197,253,.9),transparent),
+    radial-gradient(4px 4px at 85% 20%,rgba(59,130,246,.8),transparent);
+  background-repeat:repeat;
+  background-size:220px 220px;
+  animation:particlesFloat 18s linear infinite;
+  opacity:.65;
+  filter:drop-shadow(0 0 6px rgba(59,130,246,.8));
+  z-index:0;
+}
+
+.particle-section>*{
+  position:relative;
+  z-index:1;
+}
+
+@keyframes particlesFloat{
+  0%{transform:translateY(0)}
+  100%{transform:translateY(-300px)}
+}
+
+/* ===== Carousel ===== */
 .carousel-box{
-  height:240px;
+  height:260px;
   display:flex;
   align-items:center;
   justify-content:center;
   background:linear-gradient(135deg,#0f1b4d,#1e40af,#2563eb);
-  border-radius:24px;
-  font-size:26px;
+  border-radius:26px;
+  font-size:28px;
   font-weight:800;
   margin-top:40px;
   border:1px solid rgba(59,130,246,.4);
-  box-shadow:0 0 40px rgba(37,99,235,.25);
+  box-shadow:0 0 45px rgba(37,99,235,.3);
   transition:.4s;
 }
-.carousel-box:hover{transform:translateY(-8px) scale(1.02)}
 
-.services-grid,.testimonial-grid{
+.carousel-box:hover{
+  transform:translateY(-10px) scale(1.03);
+}
+
+/* ===== Services / Testimonials ===== */
+.services-grid,
+.testimonial-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:30px;
-  margin-top:40px
+  gap:35px;
+  margin-top:50px;
+}
+
+.services-grid h3{
+  font-family:'Orbitron',sans-serif;
+  font-weight:800;
+  color:#60a5fa;
+  margin-bottom:12px;
 }
 
 .testimonial{
   background:#111c4d;
   padding:30px;
-  border-radius:20px;
-  border:1px solid #1e3a8a
+  border-radius:22px;
+  border:1px solid #1e3a8a;
 }
 
+.testimonial p{
+  color:#cbd5e1;
+  margin-top:15px;
+}
+
+/* ===== Contact ===== */
 .contact-form{
-  max-width:600px;
+  max-width:650px;
   margin:auto;
   background:#111c4d;
-  padding:40px;
-  border-radius:20px;
-  border:1px solid #1e3a8a
+  padding:45px;
+  border-radius:25px;
+  border:1px solid #1e3a8a;
 }
 
-.contact-form input,.contact-form textarea{
+.contact-form input,
+.contact-form textarea{
   width:100%;
-  padding:14px;
-  margin-bottom:15px;
-  border-radius:10px;
+  padding:16px;
+  margin-bottom:18px;
+  border-radius:12px;
   border:1px solid #1e3a8a;
   background:#0a0f2c;
-  color:#fff
+  color:#fff;
 }
 
 .contact-form button{
   width:100%;
-  padding:14px;
+  padding:16px;
   border-radius:50px;
   border:none;
   background:#2563eb;
   color:#fff;
   font-weight:bold;
   cursor:pointer;
-  transition:.3s
+  transition:.3s;
 }
 
-footer{text-align:center;padding:30px;border-top:1px solid #1e3a8a;color:#94a3b8}
+.contact-form button:hover{
+  background:#3b82f6;
+  transform:scale(1.04);
+}
+
+footer{
+  text-align:center;
+  padding:40px;
+  border-top:1px solid #1e3a8a;
+  color:#94a3b8;
+}
 
 @media(max-width:768px){
-  section{padding:60px 20px}
+  section{padding:70px 20px}
 }
 </style>
 </head>
@@ -185,6 +331,88 @@ footer{text-align:center;padding:30px;border-top:1px solid #1e3a8a;color:#94a3b8
   </div>
 </section>
 
+<section class="container">
+  <div class="split-grid">
+    <div class="card">
+      <h3>Residential</h3>
+      <ul>
+        <li>Electrical Panel Repairs & Upgrades</li>
+        <li>Outlet & Switch Installations</li>
+        <li>Interior & Exterior Lighting Installation</li>
+        <li>Recessed & LED Lighting Upgrades</li>
+        <li>Appliance Wiring & Dedicated Circuits</li>
+        <li>EV Charger Installation</li>
+        <li>Ceiling Fan Installation</li>
+        <li>Smart Home Device Installation</li>
+        <li>Service Upgrades & Meter Replacements</li>
+        <li>Subpanel Installations</li>
+        <li>GFCI & AFCI Protection Installation</li>
+        <li>Outdoor & Landscape Lighting</li>
+        <li>Basement & Garage Wiring</li>
+        <li>Hot Tub & Pool Wiring</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Commercial</h3>
+      <ul>
+        <li>Office & Tenant Build-Out Wiring</li>
+        <li>Commercial Lighting Retrofits (LED Upgrades)</li>
+        <li>3-Phase Power Installations</li>
+        <li>Electrical Distribution Systems</li>
+        <li>Commercial Service Upgrades</li>
+        <li>Backup Generator Wiring</li>
+        <li>Emergency & Exit Lighting Systems</li>
+        <li>Data & Low-Voltage Cabling</li>
+        <li>Security & Access Control Wiring</li>
+        <li>Fire Alarm System Wiring</li>
+        <li>Conduit Installation & Pipe Bending</li>
+        <li>Transformer Installation</li>
+        <li>Load Calculations & Panel Scheduling</li>
+        <li>Equipment Disconnect Installations</li>
+        <li>Commercial Kitchen Equipment Wiring</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="container particle-section">
+  <h2 class="section-title">Recent Projects</h2>
+  <div class="carousel-box" id="projectSlide">Panel Upgrade – Hoboken</div>
+</section>
+
+<section class="container particle-section">
+  <h2 class="section-title">Other Services</h2>
+  <div class="services-grid">
+    <div class="card"><h3>Surround Sound Theatre System</h3><p>Custom in-wall and in-ceiling speaker installations with clean wire management for a premium home theater experience.</p></div>
+    <div class="card"><h3>TV Mounting</h3><p>Secure TV mounting with concealed wiring and professional cable management.</p></div>
+    <div class="card"><h3>Smart Home Security</h3><p>Installation of security cameras, smart locks, motion sensors, and monitoring systems.</p></div>
+    <div class="card"><h3>HVAC</h3><p>Electrical wiring and dedicated circuits for HVAC units and ventilation systems.</p></div>
+    <div class="card"><h3>Emergency Electrical Repairs</h3><p>Rapid response service for unexpected power outages and urgent safety concerns.</p></div>
+    <div class="card"><h3>General Handyman Work</h3><p>Reliable small repairs and home improvement tasks handled with precision.</p></div>
+  </div>
+</section>
+
+<section class="container particle-section">
+  <h2 class="section-title">Client Testimonials</h2>
+  <div class="testimonial-grid">
+    <div class="testimonial"><strong>Michael R. – Hoboken, NJ</strong><p>Upgraded our panel and installed recessed lighting. Extremely clean and professional.</p></div>
+    <div class="testimonial"><strong>Danielle T. – Brooklyn, NY</strong><p>TV mounting and dedicated circuits done perfectly. Great communication.</p></div>
+    <div class="testimonial"><strong>Carlos M. – Manhattan, NY</strong><p>Oven repair was diagnosed and fixed the same day. Professional and efficient.</p></div>
+  </div>
+</section>
+
+<section id="contact" class="particle-section">
+  <h2 class="section-title">Contact Us</h2>
+  <div class="contact-form">
+    <input placeholder="Full Name">
+    <input placeholder="Email Address">
+    <input placeholder="Phone Number">
+    <textarea rows="4" placeholder="Describe your project..."></textarea>
+    <button>Send Message</button>
+  </div>
+</section>
+
 <footer>SparksByAura LLC.</footer>
 
 <script>
@@ -194,14 +422,14 @@ const projects=[
 "Furniture Assembly",
 "Full Apartment Rewire"
 ];
+
 let current=0;
 const slide=document.getElementById("projectSlide");
-if(slide){
+
 setInterval(()=>{
 current=(current+1)%projects.length;
 slide.textContent=projects[current];
 },4000);
-}
 </script>
 
 </body>
