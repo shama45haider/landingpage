@@ -46,7 +46,7 @@ nav{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:20px;
+  padding:25px 30px;
   background:rgba(0,0,0,0.6);
   backdrop-filter:blur(10px);
   border-bottom:1px solid #1e3a8a;
@@ -54,7 +54,17 @@ nav{
   top:0;
   z-index:1000;
 }
-nav img{height:55px}
+
+nav img{
+  height:70px;
+  filter:drop-shadow(0 0 12px rgba(59,130,246,.9));
+  transition:transform .3s ease, filter .3s ease;
+}
+
+nav img:hover{
+  transform:scale(1.08);
+  filter:drop-shadow(0 0 20px rgba(59,130,246,1));
+}
 
 /* ===== Hero ===== */
 .hero{text-align:center;padding:120px 20px 80px}
@@ -63,7 +73,6 @@ nav img{height:55px}
   font-family:'Orbitron',sans-serif;
   font-size:clamp(38px,6vw,68px);
   font-weight:900;
-  letter-spacing:1px;
 }
 
 .line-one{
@@ -157,33 +166,6 @@ nav img{height:55px}
   100%{opacity:.6;transform:scaleX(1)}
 }
 
-/* ===== Grids ===== */
-.split-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:35px;
-  margin-top:70px;
-}
-
-.card{
-  background:#111c4d;
-  padding:35px;
-  border-radius:22px;
-  border:1px solid #1e3a8a;
-  transition:.3s;
-}
-
-.card:hover{
-  transform:translateY(-8px);
-  box-shadow:0 0 30px rgba(59,130,246,.35);
-}
-
-.card ul{
-  margin-top:20px;
-  line-height:1.9;
-  color:#cbd5e1;
-}
-
 /* ===== Particle Section ===== */
 .particle-section{
   position:relative;
@@ -193,7 +175,7 @@ nav img{height:55px}
 .particle-section::before{
   content:'';
   position:absolute;
-  inset:0;
+  inset:-600px 0 0 0;
   background-image:
     radial-gradient(3px 3px at 15% 25%,rgba(96,165,250,.9),transparent),
     radial-gradient(4px 4px at 70% 60%,rgba(59,130,246,.85),transparent),
@@ -201,7 +183,7 @@ nav img{height:55px}
     radial-gradient(4px 4px at 85% 20%,rgba(59,130,246,.8),transparent);
   background-repeat:repeat;
   background-size:220px 220px;
-  animation:particlesFloat 18s linear infinite;
+  animation:particlesFloat 25s linear infinite;
   opacity:.65;
   filter:drop-shadow(0 0 6px rgba(59,130,246,.8));
   z-index:0;
@@ -213,8 +195,8 @@ nav img{height:55px}
 }
 
 @keyframes particlesFloat{
-  0%{transform:translateY(0)}
-  100%{transform:translateY(-300px)}
+  from { transform: translateY(0); }
+  to   { transform: translateY(-600px); }
 }
 
 /* ===== Carousel ===== */
@@ -237,81 +219,24 @@ nav img{height:55px}
   transform:translateY(-10px) scale(1.03);
 }
 
-/* ===== Services / Testimonials ===== */
-.services-grid,
-.testimonial-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:35px;
-  margin-top:50px;
-}
-
-.services-grid h3{
-  font-family:'Orbitron',sans-serif;
-  font-weight:800;
-  color:#60a5fa;
-  margin-bottom:12px;
-}
-
-.testimonial{
-  background:#111c4d;
-  padding:30px;
-  border-radius:22px;
-  border:1px solid #1e3a8a;
-}
-
-.testimonial p{
-  color:#cbd5e1;
-  margin-top:15px;
-}
-
-/* ===== Contact ===== */
-.contact-form{
-  max-width:650px;
-  margin:auto;
-  background:#111c4d;
-  padding:45px;
-  border-radius:25px;
-  border:1px solid #1e3a8a;
-}
-
-.contact-form input,
-.contact-form textarea{
-  width:100%;
-  padding:16px;
-  margin-bottom:18px;
-  border-radius:12px;
-  border:1px solid #1e3a8a;
-  background:#0a0f2c;
-  color:#fff;
-}
-
-.contact-form button{
-  width:100%;
-  padding:16px;
-  border-radius:50px;
-  border:none;
-  background:#2563eb;
-  color:#fff;
-  font-weight:bold;
-  cursor:pointer;
-  transition:.3s;
-}
-
-.contact-form button:hover{
-  background:#3b82f6;
-  transform:scale(1.04);
-}
-
-footer{
-  text-align:center;
-  padding:40px;
-  border-top:1px solid #1e3a8a;
-  color:#94a3b8;
-}
-
+/* ===== Responsive ===== */
 @media(max-width:768px){
-  section{padding:70px 20px}
+
+  nav{padding:18px 20px}
+  nav img{height:55px}
+
+  .hero{padding:90px 20px 60px}
+  .hero h1{font-size:clamp(32px,8vw,48px)}
+
+  .buttons{flex-direction:column}
+  .btn{width:100%;justify-content:center}
+
+  .carousel-box{
+    height:200px;
+    font-size:20px;
+    padding:20px;
+    text-align:center;
+  }
 }
 </style>
 </head>
@@ -331,86 +256,9 @@ footer{
   </div>
 </section>
 
-<section class="container">
-  <div class="split-grid">
-    <div class="card">
-      <h3>Residential</h3>
-      <ul>
-        <li>Electrical Panel Repairs & Upgrades</li>
-        <li>Outlet & Switch Installations</li>
-        <li>Interior & Exterior Lighting Installation</li>
-        <li>Recessed & LED Lighting Upgrades</li>
-        <li>Appliance Wiring & Dedicated Circuits</li>
-        <li>EV Charger Installation</li>
-        <li>Ceiling Fan Installation</li>
-        <li>Smart Home Device Installation</li>
-        <li>Service Upgrades & Meter Replacements</li>
-        <li>Subpanel Installations</li>
-        <li>GFCI & AFCI Protection Installation</li>
-        <li>Outdoor & Landscape Lighting</li>
-        <li>Basement & Garage Wiring</li>
-        <li>Hot Tub & Pool Wiring</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3>Commercial</h3>
-      <ul>
-        <li>Office & Tenant Build-Out Wiring</li>
-        <li>Commercial Lighting Retrofits (LED Upgrades)</li>
-        <li>3-Phase Power Installations</li>
-        <li>Electrical Distribution Systems</li>
-        <li>Commercial Service Upgrades</li>
-        <li>Backup Generator Wiring</li>
-        <li>Emergency & Exit Lighting Systems</li>
-        <li>Data & Low-Voltage Cabling</li>
-        <li>Security & Access Control Wiring</li>
-        <li>Fire Alarm System Wiring</li>
-        <li>Conduit Installation & Pipe Bending</li>
-        <li>Transformer Installation</li>
-        <li>Load Calculations & Panel Scheduling</li>
-        <li>Equipment Disconnect Installations</li>
-        <li>Commercial Kitchen Equipment Wiring</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
 <section class="container particle-section">
   <h2 class="section-title">Recent Projects</h2>
   <div class="carousel-box" id="projectSlide">Panel Upgrade – Hoboken</div>
-</section>
-
-<section class="container particle-section">
-  <h2 class="section-title">Other Services</h2>
-  <div class="services-grid">
-    <div class="card"><h3>Surround Sound Theatre System</h3><p>Custom in-wall and in-ceiling speaker installations with clean wire management for a premium home theater experience.</p></div>
-    <div class="card"><h3>TV Mounting</h3><p>Secure TV mounting with concealed wiring and professional cable management.</p></div>
-    <div class="card"><h3>Smart Home Security</h3><p>Installation of security cameras, smart locks, motion sensors, and monitoring systems.</p></div>
-    <div class="card"><h3>HVAC</h3><p>Electrical wiring and dedicated circuits for HVAC units and ventilation systems.</p></div>
-    <div class="card"><h3>Emergency Electrical Repairs</h3><p>Rapid response service for unexpected power outages and urgent safety concerns.</p></div>
-    <div class="card"><h3>General Handyman Work</h3><p>Reliable small repairs and home improvement tasks handled with precision.</p></div>
-  </div>
-</section>
-
-<section class="container particle-section">
-  <h2 class="section-title">Client Testimonials</h2>
-  <div class="testimonial-grid">
-    <div class="testimonial"><strong>Michael R. – Hoboken, NJ</strong><p>Upgraded our panel and installed recessed lighting. Extremely clean and professional.</p></div>
-    <div class="testimonial"><strong>Danielle T. – Brooklyn, NY</strong><p>TV mounting and dedicated circuits done perfectly. Great communication.</p></div>
-    <div class="testimonial"><strong>Carlos M. – Manhattan, NY</strong><p>Oven repair was diagnosed and fixed the same day. Professional and efficient.</p></div>
-  </div>
-</section>
-
-<section id="contact" class="particle-section">
-  <h2 class="section-title">Contact Us</h2>
-  <div class="contact-form">
-    <input placeholder="Full Name">
-    <input placeholder="Email Address">
-    <input placeholder="Phone Number">
-    <textarea rows="4" placeholder="Describe your project..."></textarea>
-    <button>Send Message</button>
-  </div>
 </section>
 
 <footer>SparksByAura LLC.</footer>
