@@ -1,13 +1,299 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SparksByAura | Client Portal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Montserrat',sans-serif;
+  background:radial-gradient(circle at top,#0a0f2c 0%,#050816 60%,#000 100%);
+  color:#fff;
+  min-height:100vh;
+}
+
+/* ===== LOGIN SCREEN ===== */
+
+.login-screen{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.login-card{
+  width:100%;
+  max-width:420px;
+  padding:50px;
+  border-radius:25px;
+  background:#111c4d;
+  border:1px solid #1e3a8a;
+  box-shadow:0 0 60px rgba(37,99,235,.3);
+}
+
+.login-card h1{
+  font-family:'Orbitron',sans-serif;
+  margin-bottom:25px;
+  text-align:center;
+  background:linear-gradient(90deg,#60a5fa,#3b82f6);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.login-card input,
+.login-card select{
+  width:100%;
+  padding:14px;
+  margin-bottom:15px;
+  border-radius:10px;
+  border:1px solid #1e3a8a;
+  background:#0a0f2c;
+  color:#fff;
+}
+
+.login-card button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:50px;
+  background:linear-gradient(90deg,#2563eb,#3b82f6);
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.login-card button:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 20px rgba(59,130,246,.6);
+}
+
+.back-link{
+  display:block;
+  text-align:center;
+  margin-top:15px;
+  font-size:13px;
+  color:#93c5fd;
+  text-decoration:none;
+}
+
+/* ===== DASHBOARD ===== */
+
+.dashboard{
+  display:none;
+  height:100vh;
+}
+
+.sidebar{
+  width:250px;
+  background:#111c4d;
+  padding:30px 20px;
+  border-right:1px solid #1e3a8a;
+}
+
+.sidebar h2{
+  font-family:'Orbitron',sans-serif;
+  color:#60a5fa;
+  margin-bottom:25px;
+}
+
+.sidebar ul{list-style:none}
+.sidebar li{
+  margin-bottom:18px;
+  cursor:pointer;
+  color:#cbd5e1;
+}
+.sidebar li:hover{color:#60a5fa}
+
+.main{
+  flex:1;
+  padding:30px;
+  overflow:auto;
+}
+
+.dashboard-wrapper{
+  display:flex;
+  height:100%;
+}
+
+.metric-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  margin-bottom:30px;
+}
+
+.metric-card{
+  background:#111c4d;
+  padding:20px;
+  border-radius:15px;
+  border:1px solid #1e3a8a;
+}
+
+.metric-card h3{
+  font-size:28px;
+  color:#60a5fa;
+  font-family:'Orbitron',sans-serif;
+}
+
+.chart{
+  background:#111c4d;
+  padding:20px;
+  border-radius:15px;
+  border:1px solid #1e3a8a;
+}
+
+.bar{
+  height:20px;
+  margin-bottom:12px;
+  background:linear-gradient(90deg,#2563eb,#3b82f6);
+  border-radius:10px;
+}
+
+.admin-panel{
+  margin-top:30px;
+  padding:20px;
+  background:#1e293b;
+  border-radius:15px;
+  border:1px solid #334155;
+}
+
+.logout-btn{
+  margin-top:25px;
+  padding:10px;
+  width:100%;
+  border:none;
+  border-radius:8px;
+  background:#dc2626;
+  color:#fff;
+  cursor:pointer;
+}
+
+@media(max-width:900px){
+  .sidebar{display:none}
+}
+</style>
 </head>
-<body style="background:#0a0f2c;color:white;font-family:sans-serif;text-align:center;padding-top:100px;">
-<h1>Client Portal (Demo Ready)</h1>
-<p>Replace with full SaaS portal HTML before production.</p>
-<a href="index.html" style="color:#60a5fa;">Back to Main Site</a>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <h1>Client Portal</h1>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <select id="role">
+      <option value="client">Client</option>
+      <option value="admin">Admin (Demo)</option>
+    </select>
+    <button onclick="login()">Login</button>
+    <a href="index.html" class="back-link">← Back to Main Site</a>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+  <div class="dashboard-wrapper">
+    <div class="sidebar">
+      <h2>SparksByAura</h2>
+      <ul>
+        <li>Dashboard</li>
+        <li>Projects</li>
+        <li>Invoices</li>
+        <li onclick="logout()">Logout</li>
+      </ul>
+    </div>
+
+    <div class="main">
+      <h2 style="margin-bottom:20px;">Overview</h2>
+
+      <div class="metric-grid">
+        <div class="metric-card">
+          <h3 id="projectsCount">0</h3>
+          <p>Active Projects</p>
+        </div>
+        <div class="metric-card">
+          <h3 id="invoiceCount">0</h3>
+          <p>Invoices</p>
+        </div>
+        <div class="metric-card">
+          <h3 id="satisfaction">0%</h3>
+          <p>Satisfaction</p>
+        </div>
+      </div>
+
+      <div class="chart">
+        <h3 style="margin-bottom:15px;color:#60a5fa;">Project Progress</h3>
+        <div class="bar" style="width:80%"></div>
+        <div class="bar" style="width:60%"></div>
+        <div class="bar" style="width:40%"></div>
+      </div>
+
+      <div class="admin-panel" id="adminPanel" style="display:none;">
+        <h3 style="color:#f87171;margin-bottom:10px;">Admin Demo Panel</h3>
+        <p>Manage users, update invoices, and monitor analytics (Demo Only)</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function login(){
+  const email=document.getElementById('email').value;
+  const role=document.getElementById('role').value;
+
+  if(email){
+    localStorage.setItem('spaUser',JSON.stringify({email,role}));
+    loadDashboard();
+  }
+}
+
+function loadDashboard(){
+  const user=JSON.parse(localStorage.getItem('spaUser'));
+  if(user){
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    animateMetrics();
+
+    if(user.role==='admin'){
+      document.getElementById('adminPanel').style.display='block';
+    }
+  }
+}
+
+function logout(){
+  localStorage.removeItem('spaUser');
+  location.reload();
+}
+
+function animateMetrics(){
+  animateValue('projectsCount',0,3,1000);
+  animateValue('invoiceCount',0,5,1000);
+  animateValue('satisfaction',0,99,1000,true);
+}
+
+function animateValue(id,start,end,duration,isPercent=false){
+  let range=end-start;
+  let current=start;
+  let increment=end>start?1:-1;
+  let stepTime=Math.abs(Math.floor(duration/range));
+  let obj=document.getElementById(id);
+  let timer=setInterval(()=>{
+    current+=increment;
+    obj.innerHTML=isPercent?current+'%':current;
+    if(current==end){clearInterval(timer)}
+  },stepTime);
+}
+
+window.onload=loadDashboard;
+</script>
+
 </body>
 </html>
