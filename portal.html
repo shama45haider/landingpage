@@ -9,97 +9,45 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-
 body{
   font-family:'Montserrat',sans-serif;
-  background:radial-gradient(circle at top,#0a0f2c 0%,#050816 50%,#000 100%);
+  background:radial-gradient(circle at top,#0a0f2c 0%,#050816 60%,#000 100%);
   color:#fff;
-  display:flex;
-  justify-content:center;
-  align-items:center;
   min-height:100vh;
-  position:relative;
-  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-body::before{
-  content:'';
-  position:fixed;
-  inset:0;
-  background:
-    radial-gradient(circle at 20% 30%,rgba(59,130,246,0.18),transparent 40%),
-    radial-gradient(circle at 80% 70%,rgba(37,99,235,0.15),transparent 45%);
-  animation:backgroundMove 18s ease-in-out infinite alternate;
-  z-index:0;
-}
-
-@keyframes backgroundMove{
-  0%{transform:translateY(0) scale(1)}
-  50%{transform:translateY(-20px) scale(1.05)}
-  100%{transform:translateY(10px) scale(1)}
-}
-
-.portal-container{
-  position:relative;
-  z-index:1;
+/* LOGIN CARD */
+.login-card{
+  max-width:420px;
   width:100%;
-  max-width:450px;
   background:linear-gradient(145deg,#0f1b4d,#111c4d);
   padding:50px;
   border-radius:30px;
   border:1px solid #1e3a8a;
   box-shadow:0 0 50px rgba(37,99,235,.25);
-  backdrop-filter:blur(10px);
 }
 
 h1{
   font-family:'Orbitron',sans-serif;
   text-align:center;
   margin-bottom:30px;
-  font-size:30px;
+  font-size:28px;
   background:linear-gradient(90deg,#60a5fa,#3b82f6,#1d4ed8);
   -webkit-background-clip:text;
   color:transparent;
 }
 
-.tabs{
-  display:flex;
-  margin-bottom:25px;
-}
-
-.tabs button{
-  flex:1;
-  padding:12px;
-  border:none;
-  cursor:pointer;
-  font-weight:600;
-  background:#0a0f2c;
-  color:#cbd5e1;
-  transition:.3s;
-}
-
-.tabs button.active{
-  background:#2563eb;
-  color:#fff;
-}
-
-form{
-  display:none;
-  flex-direction:column;
-}
-
-form.active{
-  display:flex;
-}
-
 input{
+  width:100%;
   padding:14px;
   margin-bottom:15px;
   border-radius:12px;
   border:1px solid #1e3a8a;
   background:#0a0f2c;
   color:#fff;
-  transition:.3s;
 }
 
 input:focus{
@@ -108,7 +56,8 @@ input:focus{
   box-shadow:0 0 12px rgba(59,130,246,.5);
 }
 
-button.submit{
+button{
+  width:100%;
   padding:14px;
   border-radius:50px;
   border:none;
@@ -119,21 +68,90 @@ button.submit{
   transition:.3s;
 }
 
-button.submit:hover{
+button:hover{
   transform:scale(1.05);
   box-shadow:0 0 20px rgba(59,130,246,.6);
 }
 
-.message{
+.demo-note{
+  font-size:12px;
+  color:#94a3b8;
   text-align:center;
-  margin-bottom:15px;
-  font-size:14px;
-  min-height:18px;
+  margin-top:10px;
 }
 
+/* DASHBOARD */
 .dashboard{
   display:none;
-  text-align:center;
+  width:100%;
+  max-width:1100px;
+  height:80vh;
+  background:#0a0f2c;
+  border-radius:25px;
+  overflow:hidden;
+  box-shadow:0 0 50px rgba(37,99,235,.25);
+  border:1px solid #1e3a8a;
+}
+
+.dashboard-grid{
+  display:grid;
+  grid-template-columns:240px 1fr;
+  height:100%;
+}
+
+.sidebar{
+  background:#111c4d;
+  padding:30px 20px;
+  border-right:1px solid #1e3a8a;
+}
+
+.sidebar h2{
+  font-family:'Orbitron',sans-serif;
+  font-size:18px;
+  margin-bottom:25px;
+  color:#60a5fa;
+}
+
+.sidebar ul{
+  list-style:none;
+}
+
+.sidebar li{
+  margin-bottom:18px;
+  color:#cbd5e1;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.sidebar li:hover{
+  color:#60a5fa;
+}
+
+.main-panel{
+  padding:40px;
+  overflow:auto;
+}
+
+.panel-card{
+  background:#111c4d;
+  padding:25px;
+  border-radius:18px;
+  border:1px solid #1e3a8a;
+  margin-bottom:25px;
+}
+
+.panel-card h3{
+  margin-bottom:12px;
+  color:#60a5fa;
+}
+
+.status-badge{
+  display:inline-block;
+  padding:6px 12px;
+  border-radius:50px;
+  font-size:12px;
+  background:rgba(59,130,246,.2);
+  color:#60a5fa;
 }
 
 .logout-btn{
@@ -141,124 +159,76 @@ button.submit:hover{
   background:#dc2626;
 }
 
-.back-link{
-  text-align:center;
-  margin-top:25px;
-}
-
-.back-link a{
-  color:#60a5fa;
-  text-decoration:none;
-}
-
-.back-link a:hover{
-  text-decoration:underline;
+@media(max-width:900px){
+  .dashboard-grid{
+    grid-template-columns:1fr;
+  }
+  .sidebar{
+    display:none;
+  }
 }
 </style>
 </head>
 <body>
 
-<div class="portal-container">
-  <h1>Client Portal</h1>
+<div class="login-card" id="loginCard">
+  <h1>Client Portal Login</h1>
+  <input type="email" id="email" placeholder="Email Address">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="fakeLogin()">Login</button>
+  <div class="demo-note">Demo: any email + password works</div>
+</div>
 
-  <div id="authSection">
-    <div class="tabs">
-      <button id="loginTab" class="active" onclick="showForm('login')">Login</button>
-      <button id="registerTab" onclick="showForm('register')">Create Account</button>
+<div class="dashboard" id="dashboard">
+  <div class="dashboard-grid">
+    <div class="sidebar">
+      <h2>Client Panel</h2>
+      <ul>
+        <li>🏠 Dashboard</li>
+        <li>📄 Invoices</li>
+        <li>🛠 Active Projects</li>
+        <li>📅 Appointments</li>
+        <li>⚡ Service History</li>
+      </ul>
+      <button class="logout-btn" onclick="logout()">Logout</button>
     </div>
 
-    <div class="message" id="message"></div>
+    <div class="main-panel">
+      <div class="panel-card">
+        <h3>Current Project</h3>
+        <p>Panel Upgrade – Hoboken, NJ</p>
+        <span class="status-badge">In Progress</span>
+      </div>
 
-    <form id="loginForm" class="active">
-      <input type="email" id="loginEmail" placeholder="Email Address" required>
-      <input type="password" id="loginPassword" placeholder="Password" required>
-      <button type="submit" class="submit">Login</button>
-    </form>
+      <div class="panel-card">
+        <h3>Latest Invoice</h3>
+        <p>Invoice #1024 – $2,850</p>
+        <span class="status-badge">Pending Payment</span>
+      </div>
 
-    <form id="registerForm">
-      <input type="text" id="registerName" placeholder="Full Name" required>
-      <input type="email" id="registerEmail" placeholder="Email Address" required>
-      <input type="password" id="registerPassword" placeholder="Create Password (min 6 chars)" required minlength="6">
-      <button type="submit" class="submit">Create Account</button>
-    </form>
-  </div>
-
-  <div class="dashboard" id="dashboard">
-    <h2 id="welcomeText"></h2>
-    <p>You are securely logged in.</p>
-    <button class="submit logout-btn" onclick="logout()">Logout</button>
-  </div>
-
-  <div class="back-link">
-    <a href="index.html">← Back to Main Site</a>
+      <div class="panel-card">
+        <h3>Next Appointment</h3>
+        <p>March 18, 2026 – 10:00 AM</p>
+        <span class="status-badge">Scheduled</span>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
-function showForm(type){
-  document.getElementById('loginForm').classList.remove('active');
-  document.getElementById('registerForm').classList.remove('active');
-  document.getElementById('loginTab').classList.remove('active');
-  document.getElementById('registerTab').classList.remove('active');
-  document.getElementById('message').textContent='';
+function fakeLogin(){
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
 
-  if(type === 'login'){
-    document.getElementById('loginForm').classList.add('active');
-    document.getElementById('loginTab').classList.add('active');
-  } else {
-    document.getElementById('registerForm').classList.add('active');
-    document.getElementById('registerTab').classList.add('active');
+  if(email && password){
+    document.getElementById('loginCard').style.display='none';
+    document.getElementById('dashboard').style.display='block';
   }
-}
-
-function saveUser(user){
-  localStorage.setItem('spaUser', JSON.stringify(user));
-}
-
-function getUser(){
-  return JSON.parse(localStorage.getItem('spaUser'));
-}
-
-function showDashboard(user){
-  document.getElementById('authSection').style.display='none';
-  document.getElementById('dashboard').style.display='block';
-  document.getElementById('welcomeText').textContent = `Welcome, ${user.name}`;
 }
 
 function logout(){
-  localStorage.removeItem('spaUser');
-  location.reload();
-}
-
-document.getElementById('registerForm').addEventListener('submit', function(e){
-  e.preventDefault();
-  const user = {
-    name: document.getElementById('registerName').value,
-    email: document.getElementById('registerEmail').value,
-    password: document.getElementById('registerPassword').value
-  };
-  saveUser(user);
-  showDashboard(user);
-});
-
-document.getElementById('loginForm').addEventListener('submit', function(e){
-  e.preventDefault();
-  const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
-  const storedUser = getUser();
-
-  if(storedUser && storedUser.email === email && storedUser.password === password){
-    showDashboard(storedUser);
-  } else {
-    document.getElementById('message').textContent = 'Invalid email or password.';
-  }
-});
-
-window.onload = function(){
-  const user = getUser();
-  if(user){
-    showDashboard(user);
-  }
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('loginCard').style.display='block';
 }
 </script>
 
