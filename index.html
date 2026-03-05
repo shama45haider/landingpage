@@ -18,6 +18,42 @@ body{
   position:relative;
 }
 
+/* ===== Shared Animated Dashboard Background (can be reused in client portal) ===== */
+.portal-dashboard{
+  position:relative;
+  min-height:100vh;
+  background:radial-gradient(circle at top,#0a0f2c 0%,#050816 50%,#000 100%);
+}
+
+.portal-dashboard::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at 15% 25%,rgba(59,130,246,.18),transparent 40%),
+    radial-gradient(circle at 75% 70%,rgba(37,99,235,.15),transparent 45%),
+    radial-gradient(circle at 50% 90%,rgba(96,165,250,.12),transparent 40%);
+  animation:backgroundMove 18s ease-in-out infinite alternate;
+  pointer-events:none;
+  z-index:0;
+}
+
+.portal-dashboard::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    radial-gradient(2px 2px at 20% 20%,rgba(96,165,250,.9),transparent),
+    radial-gradient(3px 3px at 60% 60%,rgba(59,130,246,.85),transparent),
+    radial-gradient(2px 2px at 80% 30%,rgba(147,197,253,.9),transparent),
+    radial-gradient(3px 3px at 30% 80%,rgba(59,130,246,.8),transparent);
+  background-size:240px 240px;
+  opacity:.6;
+  animation:energyFloat 25s linear infinite;
+  pointer-events:none;
+  z-index:0;
+}
+
 body::before{
   content:'';
   position:fixed;
@@ -29,6 +65,30 @@ body::before{
   animation:backgroundMove 18s ease-in-out infinite alternate;
   z-index:0;
   pointer-events:none;
+}
+
+/* subtle animated energy particles */
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    radial-gradient(2px 2px at 10% 20%,rgba(96,165,250,.9),transparent),
+    radial-gradient(2px 2px at 40% 70%,rgba(59,130,246,.8),transparent),
+    radial-gradient(3px 3px at 70% 40%,rgba(147,197,253,.9),transparent),
+    radial-gradient(2px 2px at 85% 85%,rgba(59,130,246,.8),transparent),
+    radial-gradient(3px 3px at 25% 90%,rgba(96,165,250,.8),transparent);
+  background-repeat:repeat;
+  background-size:220px 220px;
+  opacity:.55;
+  animation:energyFloat 25s linear infinite;
+  pointer-events:none;
+  z-index:0;
+}
+
+@keyframes energyFloat{
+  0%{transform:translateY(0)}
+  100%{transform:translateY(-400px)}
 }
 
 @keyframes backgroundMove{
@@ -57,6 +117,14 @@ nav img{
   height:55px;
   position:absolute;
   left:20px;
+  filter:drop-shadow(0 0 8px rgba(59,130,246,.7));
+  animation:logoArc 4s ease-in-out infinite alternate;
+}
+
+@keyframes logoArc{
+  0%{filter:drop-shadow(0 0 6px rgba(59,130,246,.5));transform:rotate(0deg)}
+  50%{filter:drop-shadow(0 0 18px rgba(96,165,250,1));transform:rotate(.6deg)}
+  100%{filter:drop-shadow(0 0 10px rgba(59,130,246,.7));transform:rotate(-.6deg)}
 }
 
 .nav-links{
@@ -277,7 +345,13 @@ nav img{
   background:linear-gradient(90deg,#60a5fa,#3b82f6,#1d4ed8);
   -webkit-background-clip:text;
   color:transparent;
-  animation:titleGlow 3s ease-in-out infinite alternate;
+  animation:titleGlow 3s ease-in-out infinite alternate, lightningStreak 6s linear infinite;
+}
+
+@keyframes lightningStreak{
+  0%{background-position:-400px}
+  100%{background-position:400px}
+}
 }
 
 .section-title::after{
@@ -829,6 +903,33 @@ document.addEventListener("DOMContentLoaded", function(){
   elements.forEach(el=>observer.observe(el));
 });
 </script>
+
+<div id="cursorGlow"></div>
+
+<script>
+const glow=document.getElementById('cursorGlow');
+
+document.addEventListener('mousemove',e=>{
+  glow.style.left=e.clientX+'px';
+  glow.style.top=e.clientY+'px';
+});
+</script>
+
+<style>
+#cursorGlow{
+  position:fixed;
+  width:120px;
+  height:120px;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(59,130,246,.12),transparent 65%);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  mix-blend-mode:screen;
+  z-index:999;
+  filter:blur(28px);
+  opacity:.6;
+}
+</style>
 
 </body>
 </html>
